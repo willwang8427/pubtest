@@ -1,6 +1,11 @@
 package will.wang.test;
 
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
+
+import ch.obermuhlner.math.big.BigDecimalMath;
 
 public class Fib {
 
@@ -8,8 +13,9 @@ public class Fib {
 	 * 基于循环的算法，效率一般 o(n)
 	 * @param n
 	 * @return
+	 * @throws IOException 
 	 */
-	public static BigInteger fibLoop(long n) {
+	public static BigInteger fibLoop(long n){
 		if(n <= 0) {
 			throw new IllegalArgumentException("please make sure n > 0");
 		}
@@ -18,13 +24,14 @@ public class Fib {
 		}
 		BigInteger f1 = BigInteger.valueOf(1);
 		BigInteger f2 = BigInteger.valueOf(1);
-		BigInteger result = null;
+		BigInteger result = null;	
+		
 		for(long i=3; i <= n; i++) {
 			result = f1.add(f2);
 			f1 = f2;
 			f2 = result;
 			
-		//	System.out.println("第" + i + "位:" + result);
+	    	//System.out.println(result);
 		}
 		
 		return result;
@@ -92,4 +99,48 @@ public class Fib {
 		
 		return c;
 	}
+	
+	
+	/**
+	 * 从序号N开始，数列值开始大于l
+	 * 
+	 * 来源于： https://math.stackexchange.com/questions/67707/how-many-numbers-are-in-the-fibonacci-sequence
+	 * 
+	 * @param l
+	 * @return - 数列序号
+	 */
+	 public static long findN(long l) {
+	    double d = l;
+	    	
+	    double d1 = (d + 0.5) * Math.sqrt(5d);
+	    	
+	    double d2 = (1 + Math.sqrt(5d)) * 0.5;
+	    	
+	    return (long) (Math.log(d1)/Math.log(d2) + 1);
+	    	
+	}
+	    
+	private static MathContext mathContext = MathContext.DECIMAL128;
+	/**
+	 * 大数查找序号
+	 * 	
+	 * @param l
+	 * @return
+	 */
+	public static BigInteger findN(BigInteger l) {
+			 BigDecimal d = new BigDecimal(l);
+			    	
+			 BigDecimal d1 =  d.add(new BigDecimal("0.5"))
+					 .multiply(new BigDecimal(String.valueOf(Math.sqrt(5d)))
+							 );
+			    	
+			 BigDecimal d2 = new BigDecimal(String.valueOf((1 + Math.sqrt(5d)) * 0.5));
+			 
+			 return BigDecimalMath.log(d1, mathContext).divide(
+					 BigDecimalMath.log(d2, mathContext),
+					 mathContext
+					 ).add(new BigDecimal(1))
+			 .toBigInteger();		    	
+	}
+	    
 }

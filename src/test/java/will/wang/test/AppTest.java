@@ -4,6 +4,7 @@ import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import junit.framework.Test;
@@ -132,16 +133,17 @@ public class AppTest
 		}
 	}
     
-    public void testFib() {
-    	BigInteger result = Fib.fibLoop(100000);
+    public void testFib() throws IOException {
+    	 Fib.fibLoop(1000);
     	
       	//System.out.println("testFib 第10000位:" + result);
       	 
     }
     /**
      * 比较两种算法的结果是否一致
+     * @throws IOException 
      */
-    public void testFibMatrixResult() {
+    public void testFibMatrixResult() throws IOException {
     	BigInteger result = Fib.fibMatrix(100000);
     	
     	BigInteger result1 = Fib.fibLoop(100000);
@@ -158,9 +160,29 @@ public class AppTest
     	
     	long n = 1000000;
     	
-    	BigInteger result = Fib.fibMatrix(n);
+        Fib.fibMatrix(n);
+    	//System.out.println("testMatrix 第" + n +   "位:" + result);
+    }
+    
+    /**
+     * Test Find N
+     */
+    public void testFindN() {
+    	//10^100000  最小的100万位数
+    	BigInteger b = BigInteger.valueOf(10).pow(100000);
     	
-    	System.out.println("testMatrix 第" + n +   "位:" + result);
+    	long n = Fib.findN(b).longValue(); //第n项开始，比b大
+    	
+    	
+    	BigInteger r1 = Fib.fibMatrix(n);  //计算fib（n）
+    	
+    	BigInteger r2 = Fib.fibMatrix(n - 1); //计算fib（n-1）
+    	
+    	assertTrue(r1.compareTo(b) > 0);  // fib（n） > b
+    	
+    	assertTrue(r2.compareTo(b) < 0); // fib(n - 1) < b
+    	
+    	System.out.println(n);
     }
     
     
