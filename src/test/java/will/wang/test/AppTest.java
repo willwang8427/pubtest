@@ -168,8 +168,12 @@ public class AppTest
      * Test Find N
      */
     public void testFindN() {
-    	//10^100000  最小的100万位数
-    	BigInteger b = BigInteger.valueOf(10).pow(100000);
+    	
+    	//10^0 = 1  10^1 =10  10^2 = 100, 10^3 = 1000, 10^4 = 10000,...
+    	//故，最小n位的数字，为10^(n-1) 
+    	
+    	//10^999 为第一个包含 1000 位的最小数字
+    	BigInteger b = BigInteger.valueOf(10).pow(999);
     	
     	long n = Fib.findN(b).longValue(); //第n项开始，比b大
     	
